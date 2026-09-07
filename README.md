@@ -8,11 +8,11 @@
 [![XAMPP](https://img.shields.io/badge/XAMPP-FB7A24?style=for-the-badge&logo=xampp&logoColor=white)](https://www.apachefriends.org/)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 
-A full-stack user authentication system featuring **User Registration**, **Secure Login**, and an **Interactive Dashboard**, styled with a distinct **Neo-Brutalist UI** (bold outlines, hard shadows, high contrast, and monospace typography).
+A full-stack user authentication system featuring **User Registration**, **Secure Login**, and an **Interactive User Dashboard**, styled with a distinctive **Neo-Brutalist UI** (bold geometric outlines, hard offset shadows, high contrast, and monospace typography).
 
-This project is built with **two complete, independent backend implementations**:
-1. **Node.js + Express Version**: Modern full-stack architecture powered by Express, `mysql2`, `bcrypt`, and Vite.
-2. **PHP + PDO Version**: Lightweight, zero-dependency Apache backend designed for seamless deployment in XAMPP with no Node.js runtime needed.
+This project provides **two complete, independent backend implementations**:
+1. **Node.js + Express Version**: Modern JavaScript full-stack architecture powered by Express, `mysql2`, `bcrypt`, and Vite dev proxy.
+2. **PHP + PDO Version**: Lightweight, zero-dependency Apache backend designed for seamless deployment in XAMPP running directly at `http://localhost/fsjp_project/` with no Node.js runtime needed.
 
 ---
 
@@ -25,7 +25,7 @@ This project is built with **two complete, independent backend implementations**
 - [Getting Started](#-getting-started)
   - [Prerequisites](#prerequisites)
   - [Option A: Running the Node.js Version](#option-a-running-the-nodejs-version)
-  - [Option B: Running the PHP Version (XAMPP Only)](#option-b-running-the-php-version-xampp-only)
+  - [Option B: Running the PHP Version (XAMPP - http://localhost/fsjp_project/)](#option-b-running-the-php-version-xampp---httplocalhostfsjp_project)
 - [API Reference](#-api-reference)
 - [Security Highlights](#-security-highlights)
 - [Troubleshooting](#-troubleshooting)
@@ -36,10 +36,10 @@ This project is built with **two complete, independent backend implementations**
 ## ✨ Features
 
 - **Neo-Brutalist Aesthetic**: Raw, bold, and unapologetic UI with thick geometric borders (`4px solid #111`), hard offset drop shadows (`8px 8px 0px #111`), and the `Space Mono` typeface.
-- **Dual Tab Interface**: Fluid sliding tab animation to switch effortlessly between **Login** and **Register** forms without page reloads.
+- **Dual Tab Interface**: Fluid sliding tab indicator to switch effortlessly between **Login** and **Register** forms without page reloads.
 - **Client & Server-side Validation**: Validates required fields, email formatting, and minimum password lengths (minimum 6 characters).
 - **Automated Database Provisioning**: Both backends automatically create the `fsjp_project` database and `users` table on startup if they do not already exist.
-- **Secure Password Hashing**: Utilizes industry-standard salted hashing (`bcrypt` with 10 salt rounds in Node.js, `password_hash()` with `PASSWORD_DEFAULT` in PHP). Plain text passwords are never stored or exposed.
+- **Secure Password Hashing**: Utilizes industry-standard salted hashing (`bcrypt` with 10 salt rounds in Node.js, `password_hash()` with `PASSWORD_DEFAULT` in PHP). Plain-text passwords are never stored or returned in responses.
 - **Protected User Dashboard**: Displays user details (Name, Email, and formatted Registration Date) upon successful authentication, with a session logout action.
 
 ---
@@ -48,14 +48,16 @@ This project is built with **two complete, independent backend implementations**
 
 | Feature | 🟢 Node.js / Express Version | 🟣 PHP / Apache Version |
 | :--- | :--- | :--- |
+| **Web App URL** | `http://localhost:5173` | `http://localhost/fsjp_project/` |
+| **API Base URL** | `http://localhost:3000/api/` | `http://localhost/fsjp_project/api/` |
 | **Backend Framework** | Node.js with Express 4.x | Pure PHP (7.4+ / 8.x) |
-| **Server** | Express HTTP Server (`http://localhost:3000`) | Apache Web Server (via XAMPP) |
-| **Frontend Tooling** | Vite Dev Server (`http://localhost:5173`) + Proxy | Standalone Static HTML/CSS/JS |
+| **Web Server** | Express HTTP Server (`localhost:3000`) | Apache Web Server (via XAMPP port 80/443) |
+| **Frontend Tooling** | Vite Dev Server + API Proxy | Standalone Static HTML/CSS/JS |
 | **Database Driver** | `mysql2` Connection Pool | PHP Data Objects (PDO) |
 | **Password Hashing** | `bcrypt` (10 salt rounds) | `password_hash()` (`PASSWORD_DEFAULT`) |
-| **Dependencies** | `express`, `mysql2`, `bcrypt`, `cors`, `dotenv` | None (native PHP extensions) |
+| **Dependencies** | `express`, `mysql2`, `bcrypt`, `cors`, `dotenv` | None (built-in PHP PDO extension) |
 | **CORS Support** | `cors` Express middleware | HTTP response headers (`Access-Control-Allow-*`) |
-| **Primary Use Case** | Modern JS full-stack development & microservices | Traditional web stacks, shared hosting & lightweight PHP labs |
+| **XAMPP Requirement** | MySQL only (port 3306) | Apache + MySQL (hosted in `htdocs/fsjp_project`) |
 
 ---
 
@@ -76,7 +78,7 @@ FSJP_PROJECT/
 │
 └── php-version/             # --- PHP BACKEND (XAMPP READY) ---
     ├── index.html           # Frontend HTML for PHP version
-    ├── main.js              # Frontend JS (PHP version, calls api/*.php)
+    ├── main.js              # Frontend JS (calls api/*.php relative endpoints)
     ├── style.css            # Neo-Brutalist CSS styling
     └── api/                 # PHP Backend Endpoints
         ├── db.php           # PDO database connection & auto-table creation
@@ -145,7 +147,7 @@ This option runs the frontend with **Vite** and the backend with **Node.js + Exp
    ```bash
    npm start
    ```
-   *Output:*
+   *Console output:*
    ```text
    ✅ Database ready: fsjp_project
    ✅ Users table ready
@@ -165,34 +167,52 @@ This option runs the frontend with **Vite** and the backend with **Node.js + Exp
    ```bash
    npm run dev
    ```
-4. Open the browser and visit:
+4. Open your browser and visit:
    ```text
    http://localhost:5173
    ```
 
 ---
 
-### Option B: Running the PHP Version (XAMPP Only)
+### Option B: Running the PHP Version (XAMPP - `http://localhost/fsjp_project/`)
 
-This option requires **no Node.js installation**. It runs completely within XAMPP using **Apache** and **MySQL**.
+This option requires **no Node.js or npm**. It runs completely within XAMPP using **Apache** and **MySQL**, served directly at `http://localhost/fsjp_project/`.
 
-#### Step 1: Place Project in `htdocs`
-Move or clone the repository directly inside your XAMPP `htdocs` directory:
-- **Windows Default:** `C:\xampp\htdocs\FSJP_PROJECT`
-- **macOS Default:** `/Applications/XAMPP/xamppfiles/htdocs/FSJP_PROJECT`
-- **Linux Default:** `/opt/lampp/htdocs/FSJP_PROJECT`
+#### Step 1: Deploy to XAMPP `htdocs`
+The PHP version is located in the `php-version/` directory. To access it at `http://localhost/fsjp_project/`, place the contents of `php-version/` into a folder named `fsjp_project` inside XAMPP's `htdocs`:
+
+- **Windows Default:** `C:\xampp\htdocs\fsjp_project\`
+- **macOS Default:** `/Applications/XAMPP/xamppfiles/htdocs/fsjp_project/`
+- **Linux Default:** `/opt/lampp/htdocs/fsjp_project/`
+
+You can deploy the files using either of the following methods:
+
+##### Method 1: Copy Files
+Copy all files and folders from `php-version/` into `C:\xampp\htdocs\fsjp_project\`:
+```powershell
+# In PowerShell from project root:
+New-Item -ItemType Directory -Force -Path "C:\xampp\htdocs\fsjp_project"
+Copy-Item -Path ".\php-version\*" -Destination "C:\xampp\htdocs\fsjp_project" -Recurse -Force
+```
+
+##### Method 2: Directory Junction (Recommended for Live Development)
+Create a Windows directory junction so that any code edits made in `php-version/` immediately reflect at `http://localhost/fsjp_project/` without manual copying:
+```cmd
+cmd /c mklink /J "C:\xampp\htdocs\fsjp_project" "c:\SPACE\FSJP_PROJECT\php-version"
+```
 
 #### Step 2: Start Apache and MySQL in XAMPP
 1. Open the **XAMPP Control Panel**.
-2. Click **Start** next to **Apache**.
-3. Click **Start** next to **MySQL**.
+2. Click **Start** next to **Apache** (runs on port 80 / 443).
+3. Click **Start** next to **MySQL** (runs on port 3306).
 
 #### Step 3: Open in Browser
-Open your browser and navigate to:
+Open your browser and navigate directly to:
 ```text
-http://localhost/FSJP_PROJECT/php-version/
+http://localhost/fsjp_project/
 ```
-The database and tables will be created automatically upon your first request!
+
+> **Automatic DB Provisioning**: Upon the first page request or registration attempt, `api/db.php` automatically connects to MySQL, initializes the `fsjp_project` database, and creates the `users` table.
 
 ---
 
@@ -202,8 +222,8 @@ Both backends adhere to the same JSON API specification:
 
 ### 1. User Registration
 
-- **Node.js Endpoint:** `POST /api/register`
-- **PHP Endpoint:** `POST /api/register.php`
+- **Node.js Endpoint:** `POST http://localhost:3000/api/register` (or `/api/register` via Vite proxy)
+- **PHP Endpoint:** `POST http://localhost/fsjp_project/api/register.php`
 - **Headers:** `Content-Type: application/json`
 
 #### Request Body:
@@ -233,8 +253,8 @@ Both backends adhere to the same JSON API specification:
 
 ### 2. User Login
 
-- **Node.js Endpoint:** `POST /api/login`
-- **PHP Endpoint:** `POST /api/login.php`
+- **Node.js Endpoint:** `POST http://localhost:3000/api/login` (or `/api/login` via Vite proxy)
+- **PHP Endpoint:** `POST http://localhost/fsjp_project/api/login.php`
 - **Headers:** `Content-Type: application/json`
 
 #### Request Body:
@@ -271,12 +291,12 @@ Both backends adhere to the same JSON API specification:
 
 ## 🛡️ Security Highlights
 
-- **Password Salt & Hash**: Uses one-way cryptographic hashing algorithms (`bcrypt` / `PASSWORD_DEFAULT`). Plain-text passwords are never stored in the database.
-- **Sanitized Responses**: Password hashes are stripped before returning user records to the client.
+- **Password Salt & Hash**: Uses one-way cryptographic hashing algorithms (`bcrypt` with 10 salt rounds / PHP native `PASSWORD_DEFAULT`). Plain-text passwords are never stored in the database.
+- **Sanitized Responses**: Password hashes are excluded before returning user records to the client.
 - **SQL Injection Prevention**:
   - Node.js uses parameterized prepared queries (`db.promise().query(..., [params])`).
   - PHP uses PDO prepared statements (`$stmt = $pdo->prepare(...); $stmt->execute([params]);`).
-- **Input Sanitation & Validation**: Whitespace trimming, email uniqueness verification, and minimum password length constraints.
+- **Input Sanitation & Validation**: Whitespace trimming, email uniqueness verification, and minimum password length constraints (≥ 6 characters).
 
 ---
 
@@ -284,10 +304,12 @@ Both backends adhere to the same JSON API specification:
 
 | Issue | Cause | Solution |
 | :--- | :--- | :--- |
-| **"Cannot connect to server"** | Backend server is not running | **Node.js:** Ensure `node server.js` is running on port 3000.<br>**PHP:** Ensure Apache is started in the XAMPP Control Panel. |
+| **"Cannot connect to server" (PHP)** | Apache is stopped or folder name is incorrect | Verify **Apache** is started in XAMPP Control Panel. Ensure the target folder inside `C:\xampp\htdocs\` is named `fsjp_project` and browse to `http://localhost/fsjp_project/`. |
+| **"Cannot connect to server" (Node.js)** | Express server is not running | Ensure `node server.js` is running on port 3000 inside the `server/` directory. |
 | **"Database connection failed"** | MySQL service is stopped or port is blocked | Open XAMPP Control Panel and verify **MySQL** is running on port 3306. |
-| **MySQL Port 3306 in use** | Another MySQL/MariaDB service is running | Stop the conflicting local MySQL Windows service or change the port in XAMPP & `.env`. |
-| **CORS errors in browser** | Accessing PHP files via `file:///` protocol | Do not open `index.html` via double-click; always load via `http://localhost/...`. |
+| **MySQL Port 3306 in use** | Another MySQL/MariaDB service is running | Stop conflicting local MySQL Windows services or adjust the port in XAMPP & `server/.env`. |
+| **404 Not Found at `http://localhost/fsjp_project/`** | Missing folder in `htdocs` | Confirm that `C:\xampp\htdocs\fsjp_project\` contains `index.html`, `main.js`, `style.css`, and the `api/` folder. |
+| **CORS / Network errors in browser** | Accessing HTML via `file:///` protocol | Do not open `index.html` via file explorer double-click; always access through `http://localhost/fsjp_project/` (PHP) or `http://localhost:5173` (Node.js). |
 
 ---
 
