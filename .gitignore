@@ -10,3 +10,9 @@ dist/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Personal notes
+PROJECT_EXPLANATION.txt
+
+# Local PHP version (maintained in separate repository FSJP_PROJECT_PHP)
+php-version/
